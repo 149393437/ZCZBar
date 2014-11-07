@@ -8,7 +8,9 @@
 
 #import "ZCZBarViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-@interface ZCZBarViewController ()
+#import "ZBarReaderController.h"
+
+@interface ZCZBarViewController ()<ZBarReaderDelegate>
 
 @end
 
