@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   # s.osx.deployment_target = '10.7'
   s.requires_arc = true
 
-  s.source_files = 'ZCZBarSDK/*','ZCZBarSDK/*/.*{h.m}','ZCZBarSDK/Headers/ZBarSDK/*.h'
+  s.source_files = 'ZCZBarSDK/*','ZCZBarSDK/Headers/ZBarSDK/*','ZCZBarSDK/Headers/ZBarSDK/zbar/*','ZCZBarSDK/libqrencode/*','ZCZBarSDK/Resources/*','ZCZBarSDK/Resources/ZbarImage/*'
  # s.resources = 'Assets'
 
   # s.ios.exclude_files = 'Classes/osx'
