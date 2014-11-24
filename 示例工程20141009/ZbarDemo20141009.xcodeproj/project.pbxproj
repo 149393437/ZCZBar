@@ -415,6 +415,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = zhangcheng;
 				TargetAttributes = {
+					37C4FCE419E6962D00A4D1B6 = {
+						DevelopmentTeam = YM8K42SL97;
+					};
 					37C4FD0819E6962D00A4D1B6 = {
 						TestTargetID = 37C4FCE419E6962D00A4D1B6;
 					};
@@ -629,14 +632,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZbarDemo20141009/ZbarDemo20141009-Prefix.pch";
 				INFOPLIST_FILE = "ZbarDemo20141009/ZbarDemo20141009-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/ZbarDemo20141009/ZBarSDK",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -646,14 +653,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZbarDemo20141009/ZbarDemo20141009-Prefix.pch";
 				INFOPLIST_FILE = "ZbarDemo20141009/ZbarDemo20141009-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/ZbarDemo20141009/ZBarSDK",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
