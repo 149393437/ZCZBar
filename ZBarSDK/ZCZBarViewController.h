@@ -7,6 +7,7 @@
 //
 /*
  版本说明 iOS研究院 305044955
+ 1.4版本 支持iOS8系统，修改了相应UI的适配问题
  1.3版本 全新支持arm7s arm64 全新支持ARC
  1.2版本 ZC封装的ZBar二维码SDK
     1、更新类名从CustomViewController更改为ZCZBarViewController
@@ -40,8 +41,9 @@ ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithBlock:^(NSString *s
  */
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "ZBarReaderController.h"
 #define IOS7 [[[UIDevice currentDevice] systemVersion]floatValue]>=7
-@interface ZCZBarViewController : UIViewController<AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,AVCaptureMetadataOutputObjectsDelegate>
+@interface ZCZBarViewController : UIViewController<AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ZBarReaderDelegate,AVCaptureMetadataOutputObjectsDelegate>
 {
     int num;
     BOOL upOrdown;

@@ -8,11 +8,13 @@
 
 #import "ZCZBarViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "ZBarReaderController.h"
-
-@interface ZCZBarViewController ()<ZBarReaderDelegate>
+@interface ZCZBarViewController ()
 
 @end
+
+#define WIDTH [UIScreen mainScreen].bounds.size.width
+#define HEIGHT [UIScreen mainScreen].bounds.size.height
+
 
 @implementation ZCZBarViewController
 
@@ -34,27 +36,20 @@
 }
 -(void)createView{
     
-    UIImageView*bgImageView;
-    if (self.view.frame.size.height<500) {
-        
-        UIImage*image= [UIImage imageNamed:@"qrcode_scan_bg_Green.png"];
-          bgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-64-100)];
-        bgImageView.contentMode=UIViewContentModeTop;
-        bgImageView.clipsToBounds=YES;
-      
-        bgImageView.image=image;
-        bgImageView.userInteractionEnabled=YES;
-    }else{
-        UIImage*image= [UIImage imageNamed:@"qrcode_scan_bg_Green_iphone5"];
-        bgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-64-100)];
-        bgImageView.contentMode=UIViewContentModeTop;
-        bgImageView.clipsToBounds=YES;
-        
-        bgImageView.image=image;
-        bgImageView.userInteractionEnabled=YES;
-    }
+//qrcode_scan_bg_Green_iphone5@2x.png  qrcode_scan_bg_Green@2x.png
+    UIImage*image= [UIImage imageNamed:@"qrcode_scan_bg_Green@2x.png"];
+    float capWidth=image.size.width/2;
+    float capHeight=image.size.height/2;
+    
+    image=[image stretchableImageWithLeftCapWidth:capWidth topCapHeight:capHeight];
+    UIImageView* bgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 64, WIDTH, HEIGHT-64)];
+    //bgImageView.contentMode=UIViewContentModeTop;
+    bgImageView.clipsToBounds=YES;
+    bgImageView.image=image;
+    bgImageView.userInteractionEnabled=YES;
     [self.view addSubview:bgImageView];
-    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, 320, 40)];
+    
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, bgImageView.frame.size.height-140, WIDTH, 40)];
     label.text = @"将取景框对准二维码，即可自动扫描。";
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -67,13 +62,13 @@
 
     
     
-    _line = [[UIImageView alloc] initWithFrame:CGRectMake(50, 50, 220, 2)];
+    _line = [[UIImageView alloc] initWithFrame:CGRectMake((WIDTH-220)/2, 70, 220, 2)];
     _line.image = [UIImage imageNamed:@"qrcode_scan_light_green.png"];
     [bgImageView addSubview:_line];
    
     
   //下方相册
-    UIImageView*scanImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, bgImageView.frame.size.height+64, 320, 100)];
+    UIImageView*scanImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, HEIGHT-100, WIDTH, 100)];
     scanImageView.image=[UIImage imageNamed:@"qrcode_scan_bar.png"];
     scanImageView.userInteractionEnabled=YES;
     [self.view addSubview:scanImageView];
@@ -84,7 +79,7 @@
         UIButton*button=[UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:unSelectImageNames[i]] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:selectImageNames[i]] forState:UIControlStateHighlighted];
-        button.frame=CGRectMake(320/3*i, 0, 320/3, 100);
+        button.frame=CGRectMake(WIDTH/3*i, 0, WIDTH/3, 100);
         [scanImageView addSubview:button];
         if (i==0) {
             [button addTarget:self action:@selector(pressPhotoLibraryButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -100,11 +95,11 @@
     
     
     //假导航
-    UIImageView*navImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    UIImageView*navImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, 64)];
     navImageView.image=[UIImage imageNamed:@"qrcode_scan_bar.png"];
     navImageView.userInteractionEnabled=YES;
     [self.view addSubview:navImageView];
-    UILabel*titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(320/2-32,20 , 64, 44)];
+    UILabel*titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(WIDTH/2-32,20 , 64, 44)];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.text=@"扫一扫";
     [navImageView addSubview:titleLabel];
@@ -128,10 +123,10 @@
 
     [UIView animateWithDuration:2 animations:^{
         
-         _line.frame = CGRectMake(50, 50+200, 220, 2);
+         _line.frame = CGRectMake((WIDTH-220)/2, 70+HEIGHT-310, 220, 2);
     }completion:^(BOOL finished) {
         [UIView animateWithDuration:2 animations:^{
-          _line.frame = CGRectMake(50, 50, 220, 2);
+          _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
         }];
     
     }];
@@ -163,8 +158,10 @@
     if (Custom) {
         [self initCapture];//启动摄像头
     }
-    [self createView];
     [super viewDidLoad];
+    [self createView];
+
+    
     
 }
 #pragma mark 选择相册
@@ -173,7 +170,7 @@
     [timer invalidate];
     timer=nil;
 }
-    _line.frame = CGRectMake(50, 50, 220, 2);
+    _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
     num = 0;
     upOrdown = NO;
     
@@ -198,7 +195,7 @@
         [timer invalidate];
         timer=nil;
     }
-    _line.frame = CGRectMake(50, 50, 220, 2);
+    _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
     num = 0;
     upOrdown = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -348,7 +345,7 @@
             timer=nil;
         }
         
-        _line.frame = CGRectMake(50, 50, 220, 2);
+        _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
         num = 0;
         upOrdown = NO;
         self.ScanResult(symbol.data,YES);
@@ -386,7 +383,7 @@
     }
     
     [self.captureSession stopRunning];
-    _line.frame = CGRectMake(50, 50, 220, 2);
+    _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
     num = 0;
     upOrdown = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -404,7 +401,7 @@
         [timer invalidate];
         timer=nil;
     }
-    _line.frame = CGRectMake(50, 50, 220, 2);
+    _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
     num = 0;
     upOrdown = NO;
     UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
@@ -419,7 +416,7 @@
         [timer invalidate];
         timer=nil;
     }
-    _line.frame = CGRectMake(50, 50, 220, 2);
+    _line.frame = CGRectMake((WIDTH-220)/2, 70, 220, 2);
     num = 0;
     upOrdown = NO;
     timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
