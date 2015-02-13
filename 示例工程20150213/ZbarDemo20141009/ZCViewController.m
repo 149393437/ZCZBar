@@ -27,10 +27,6 @@
     imageView.image=[QRCodeGenerator qrImageForString:@"www.baidu.com" imageSize:300];
     imageView.center=self.view.center;
     [self.view addSubview:imageView];
-    
-    
-    
-  
 	// Do any additional setup after loading the view, typically from a nib.
 }
 -(void)createButton{
@@ -42,11 +38,15 @@
     [self.view addSubview:button];
 }
 -(void)buttonClick:(UIButton*)button{
-    ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithBlock:^(NSString *result, BOOL isFinish) {
-    if (isFinish) {
-        NSLog(@"最后的结果%@",result);
-    }
-}];
+
+    
+    ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithIsQRCode:NO Block:^(NSString *result, BOOL isFinish) {
+        if (isFinish) {
+                    NSLog(@"最后的结果%@",result);
+                }
+        
+    }];
+    
     [self presentViewController:vc animated:YES completion:nil];
 
 }

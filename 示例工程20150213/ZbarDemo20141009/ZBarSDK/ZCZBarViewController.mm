@@ -26,14 +26,18 @@
     }
     return self;
 }
--(id)initWithBlock:(void(^)(NSString*,BOOL))a{
+-(id)initWithIsQRCode:(BOOL)isQRCode Block:(void(^)(NSString*,BOOL))a
+{
     if (self=[super init]) {
         self.ScanResult=a;
+        self.isQRCode=isQRCode;
         
     }
     
     return self;
 }
+
+
 -(void)createView{
     
 //qrcode_scan_bg_Green_iphone5@2x.png  qrcode_scan_bg_Green@2x.png
@@ -219,7 +223,16 @@
         [_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
         [self.captureSession setSessionPreset:AVCaptureSessionPresetHigh];
         [self.captureSession addOutput:_output];
-        _output.metadataObjectTypes =@[AVMetadataObjectTypeQRCode];
+        //在这里修改了，可以让原生兼容二维码和条形码，无需在使用Zbar
+        
+        if (_isQRCode) {
+            _output.metadataObjectTypes =@[AVMetadataObjectTypeQRCode];
+
+           
+        }else{
+             _output.metadataObjectTypes =@[AVMetadataObjectTypeEAN13Code,AVMetadataObjectTypeEAN8Code,AVMetadataObjectTypeCode128Code,AVMetadataObjectTypeQRCode];
+        }
+       
         
         if (!self.captureVideoPreviewLayer) {
             self.captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];
@@ -234,8 +247,8 @@
         
         
     }else{
-        [captureOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
-        
+        dispatch_queue_t queue = dispatch_queue_create("myQueue", NULL);
+        [captureOutput setSampleBufferDelegate:self queue:queue];        
         NSString* key = (NSString *)kCVPixelBufferPixelFormatTypeKey;
         NSNumber* value = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA];
         NSDictionary *videoSettings = [NSDictionary dictionaryWithObject:value forKey:key];
@@ -320,7 +333,6 @@
     // Create and return an image object representing the specified Quartz image
     UIImage *image = [UIImage imageWithCGImage:cgImage];
     
-    
     return image;
 }
 
@@ -367,6 +379,7 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    
     UIImage *image = [self imageFromSampleBuffer:sampleBuffer];
     
     [self decodeImage:image];

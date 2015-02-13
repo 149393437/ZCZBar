@@ -2,6 +2,8 @@ ZCZBarSDK
 =========
 
  版本说明 iOS研究院 305044955
+ 1.5版本 修正了iOS6下扫描会卡死，增加了iOS7下支持条形码,修改了算法，增加了效率
+ 1.4版本 支持iOS8系统，修改了相应UI的适配问题
  1.3版本 全新支持arm7s arm64 全新支持ARC
  1.2版本 ZC封装的ZBar二维码SDK
     1、更新类名从CustomViewController更改为ZCZBarViewController

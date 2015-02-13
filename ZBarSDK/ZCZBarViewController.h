@@ -7,6 +7,7 @@
 //
 /*
  版本说明 iOS研究院 305044955
+ 1.5版本 修正了iOS6下扫描会卡死，增加了iOS7下支持条形码,修改了算法，增加了效率
  1.4版本 支持iOS8系统，修改了相应UI的适配问题
  1.3版本 全新支持arm7s arm64 全新支持ARC
  1.2版本 ZC封装的ZBar二维码SDK
@@ -43,6 +44,8 @@ ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithBlock:^(NSString *s
 #import <AVFoundation/AVFoundation.h>
 #import "ZBarReaderController.h"
 #define IOS7 [[[UIDevice currentDevice] systemVersion]floatValue]>=7
+
+
 @interface ZCZBarViewController : UIViewController<AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ZBarReaderDelegate,AVCaptureMetadataOutputObjectsDelegate>
 {
     int num;
@@ -58,8 +61,11 @@ ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithBlock:^(NSString *s
 @property (nonatomic, assign) BOOL isScanning;
 
 @property (nonatomic,copy)void(^ScanResult)(NSString*result,BOOL isSucceed);
+@property (nonatomic)BOOL isQRCode;
+
+
 //初始化函数
--(id)initWithBlock:(void(^)(NSString*,BOOL))a;
+-(id)initWithIsQRCode:(BOOL)isQRCode Block:(void(^)(NSString*,BOOL))a;
 
 //正则表达式对扫描结果筛选
 +(NSString*)zhengze:(NSString*)str;
