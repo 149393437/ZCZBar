@@ -7,6 +7,7 @@
 //
 /*
  版本说明 iOS研究院 305044955
+ 1.6版本 增加了支持了区别条码和二维码，可以关闭扫描二维码来增加条码扫描速度
  1.5版本 修正了iOS6下扫描会卡死，增加了iOS7下支持条形码,修改了算法，增加了效率
  1.4版本 支持iOS8系统，修改了相应UI的适配问题
  1.3版本 全新支持arm7s arm64 全新支持ARC
@@ -26,12 +27,14 @@
  
 //示例代码
 扫描代码
-
-ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithBlock:^(NSString *str, BOOL isScceed) {
-    if (isScceed) {
-    NSLog(@"扫描后的结果~%@",str);
-            }
+BOOL代表是否关闭二维码扫描，专门扫描条形码
+ ZCZBarViewController*vc=[[ZCZBarViewController alloc]initWithIsQRCode:NO Block:^(NSString *result, BOOL isFinish) {
+ if (isFinish) {
+ NSLog(@"最后的结果%@",result);
+ }
+ 
  }];
+ 
  [self presentViewController:vc animated:YES completion:nil];
  
  
