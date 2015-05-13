@@ -207,6 +207,20 @@
 #pragma mark 开启相机
 - (void)initCapture
 {
+    
+    NSString *mediaType = AVMediaTypeVideo;
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+    
+    if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
+        NSString*str=[NSString stringWithFormat:@"请在系统设置－%@－相机中打开允许使用相机",  [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        return;
+        
+    }
+    
     self.captureSession = [[AVCaptureSession alloc] init];
     
     AVCaptureDevice* inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
