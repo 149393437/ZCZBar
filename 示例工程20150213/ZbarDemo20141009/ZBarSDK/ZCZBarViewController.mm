@@ -161,6 +161,8 @@
                   isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];//判断摄像头是否能用
     if (Custom) {
         [self initCapture];//启动摄像头
+    }else{
+        self.view.backgroundColor=[UIColor whiteColor];
     }
     [super viewDidLoad];
     [self createView];
@@ -478,7 +480,37 @@
     }
     return nil;
 }
++(void)createImageWithImageView:(UIImageView*)imageView String:(NSString*)str Scale:(CGFloat)scale{
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setDefaults];
+    
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [filter setValue:data forKey:@"inputMessage"];
+    
+    CIImage *outputImage = [filter outputImage];
+    
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef cgImage = [context createCGImage:outputImage
+                                       fromRect:[outputImage extent]];
+    
+    UIImage *image = [UIImage imageWithCGImage:cgImage
+                                         scale:1.0
+                                   orientation:UIImageOrientationUp];
+    
+    UIImage *resized = nil;
+    CGFloat width = image.size.width*scale;
+    CGFloat height = image.size.height*scale;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(width, height));
+    CGContextRef context1 = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context1, kCGInterpolationNone);
+    [image drawInRect:CGRectMake(0, 0, width, height)];
+    resized = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    imageView.image = resized;
+    CGImageRelease(cgImage);
 
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

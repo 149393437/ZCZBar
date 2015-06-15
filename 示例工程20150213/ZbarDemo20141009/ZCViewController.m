@@ -8,7 +8,6 @@
 
 #import "ZCViewController.h"
 #import "ZCZBarViewController.h"
-#import "QRCodeGenerator.h"
 @interface ZCViewController ()
 
 @end
@@ -23,8 +22,8 @@
     
     //生成二维码
     UIImageView*imageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-    //300数值越高越清晰
-    imageView.image=[QRCodeGenerator qrImageForString:@"www.baidu.com" imageSize:300];
+    //Scale数值越高越清晰
+    [ZCZBarViewController createImageWithImageView:imageView String:@"http://www.baidu.com"Scale:4];
     imageView.center=self.view.center;
     [self.view addSubview:imageView];
 	// Do any additional setup after loading the view, typically from a nib.
